@@ -1,0 +1,3 @@
+resistance: 104.882523
+root mean deviated: 0.223579
+mean deviation: 4.76837e-07
