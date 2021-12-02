@@ -6,13 +6,11 @@ int main(int argc, char * argv[])
     char a[1000];
     int i = 0;
     
-    while(!feof(file))
+    while((a[i] = getc(file)) != EOF)
     {
-	fscanf(file, "%c", &a[i]);
-	printf("%c", a[i]);
+        printf("%c", a[i]);
 	i++;
     }
 
     return 0;
-
 }

@@ -26,7 +26,7 @@ int main()
 
 	if(isdigit(b))
 	{
-	    printf("%d\n", b - 48);
+//	    printf("%d\n", b - 48);
 	    summ[i] = summ[i] * 10;
 	    summ[i] = summ[i] + (b - 48);   
 	}

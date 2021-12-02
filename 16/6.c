@@ -21,21 +21,18 @@ int main()
 	}
     }
 
-    stack_create(stack);
+    stack = stack_create(stack);
 
     for(j = 0; j < i; j++)
     {
 	if(isSkob(a[j]))
 	{
-		puts("[1]");
-	    printf("%c\n", a[j]);
 	    stack_push(stack, a[j]);
-puts("[2]");
+
 	    if(stack -> top > 1 && (stack -> data[stack -> top - 2]) == reverse(stack -> data[stack -> top - 1]))
 	    {
-		    puts("[2.1]");
-		printf("%c\n", stack_pop(stack));
-		printf("%c\n", stack_pop(stack));
+		stack_pop(stack);
+		stack_pop(stack);
 	    }
 	}
     }

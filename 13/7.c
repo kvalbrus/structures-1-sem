@@ -1,95 +1,79 @@
 #include <stdio.h>
+#include <math.h>
 
-void determinant(int (*matrix)[100], int size, int * summ);
-void obr(int (*matrix)[100], int y, int x, int size, int **b);
+int det(int matrix[50][50], int size);
+void m(int matrix[50][50], int mat[50][50], int x, int y, int size);
 
 int main()
 {
-    int matrix[100][100], size = 0, i = 0, j = 0;
-    int summ = 0;
+    int size = 0;
+    int matrix[50][50];
+    int x = 0, y = 0, d = 0;
 
     puts("Enter size matrix:");
     scanf("%d", &size);
 
     puts("Enter matrix");
-    for(i = 0; i < size; i++)
+
+    for(y = 0; y < size; y++)
     {
-	for(j = 0; j < size; j++)
+	for(x = 0; x < size; x++)
 	{
-	    scanf("%d", &matrix[i][j]);
+	    scanf("%d", &matrix[y][x]);
 	}
     }
 
-    determinant(matrix, size, &summ);
-
-    printf("%d\n", summ);
+    d = det(matrix, size);
+    printf("det = %d\n", d);
 
     return 0;
 }
 
-void determinant(int (*matrix)[100], int size, int * summ)
+int det(int matrix[50][50], int size)
 {
-    int i = 0,j = 0;
-    int m[100][100];
+    int i = 0;
+    int summ = 0;
+    int mat[50][50];
+    if(size > 1)
+    {
+	for(i = 0; i < size; i++)
+	{
+	    
+	    m(matrix, mat, 0, i, size);
 
-    if(size == 2)
-    {
-	puts("-------------");
-	for(i = 0; i < 2; i++)
-	{
-	    for(j = 0; j < 2; j++)
-	    {
-		printf("%d ", matrix[i][j]);
-	    }
-	    puts("");
+	    summ += pow(- 1, i) * matrix[i][0] * det(mat, size - 1);
 	}
-	puts("-------------");
-	*summ += (matrix[0][0]*matrix[1][1] - matrix[1][0]*matrix[0][1]);
+
+	return summ;
     }
-    else
-    {
-    	for(i = 0; i < size; i++)
-	{
-	    obr(matrix, 0, i, size, m);
-	    determinant(m, size - 1, summ);
-	}
-    }
+
+    return matrix[0][0];
 }
 
-void obr(int (*matrix)[100], int y, int x, int size, int ** b)
+void m(int matrix[50][50], int a[50][50], int x, int y, int size)
 {
-   // int obres[size-1][size-1];
-    int i = 0, ip = 0, j = 0, jp = 0;
+    int i = 0, j = 0;
+    int k = 0, l = 0;
 
-    for(i = 0; i < size; i++)
+    for(j = 0; j < size; j++)
     {
-	jp = 0;
-	if(i == y)
+        if(j == y)
 	{
-	    ip = 1;
-            continue;	    
+	    k = 1;
+	    continue;
 	}
 
-	for(j = 0; j < size; j++)
+	l = 0;
+
+	for(i = 0; i < size; i++)
 	{
-	    if(j == x)
+	    if(i == x)
 	    {
-		jp = 1;
+		l = 1;
 		continue;
 	    }
 
-	    b[i-ip][j-jp] = matrix[i][j];
+	    a[j-k][i-l] = matrix[j][i];
 	}
     }
-
-    for(i = 0; i < size - 1; i++)
-    {
-	for(j = 0; j < size - 1; j++)
-	{
-	    printf("%d ", b[i][j]);
-	}
-	puts("");
-    }
-
-   // b = obres;
 }

@@ -3,42 +3,32 @@
 int main()
 {
     int num[1000] = {0};
-
+    int i = 0, d = 0, j = 0, k = 0, a = 0;
     puts("Enter numbers");
     
-    int i;
     for(i = 0; (scanf("%d", &num[i])) == 1; i++) {}
     num[i] = 0;
 
-    int d = i / 2;
+    puts("Enter lenght:");
+    scanf("%*c%d", &d);
 
-    for(; d > 0;)
+    for(; d > 0; d /= 2)
     {
-	int j;
-	for(j = 0; j < d; j++)
-	{
-	    int k;
-	    for(k = j; k < i; k += d)
+	for(j = d; j < i; ++j)
+	{	    
+	    for(k = j - d; k >= 0 && num[k] > num[k+d]; k -= d)
 	    {
-	        if(num[k+d] < num[k])
-		{
-		    int a = num[k+d];
-		    num[k+d] = num[k];
-		    num[k] = a;
-		}
+	        a = num[k];
+		num[k] = num[k+d];
+		num[k+d] = a;
 	    }
-            d /= 2;
 	}
-
-	if (d == 1) break;
     }
 
-    int p = 0;
-    for(; p < i; p++)
+    for(j = 0; j < i; j++)
     {
-	printf("%d ", num[p]);
+	printf("%d ", num[j]);
     }
-
 
     return 0;
 }

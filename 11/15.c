@@ -9,9 +9,11 @@ int b(char * ch);
 
 int comparator(const void * a, const void * b);
 
+int min(int a, int b);
+
 int main()
 {
-    char a[100][200], buffer[100];
+    char a[100][200];
     int i = 0, j = 0, j1 = 0, h = 0, max = 0, m = 0;
 
     for(h = 0; scanf("%s", a[h]); h++) 
@@ -19,7 +21,7 @@ int main()
 	if(a[h][0] == '*') break;
     }
 
-    qsort(a, h - 1, sizeof(char *), comparator);
+    qsort(a, h + 1, sizeof(char) * 200, comparator);
 
     for(i = 0; i < h; i++)
     {
@@ -28,7 +30,7 @@ int main()
 	max = m > max ? m : max;
     }
 
-    for(i = 0; i < h; i++)
+    for(i = 0; i < h + 1; i++)
     {
 	if(g(a[i]) == max)
 	{
@@ -38,7 +40,7 @@ int main()
 
     puts("");
 
-    for(i = 0; i < h; i++)
+    for(i = 0; i < h + 1; i++)
     {
 	if(b(a[i]))
 	{
@@ -78,23 +80,27 @@ int b(char * ch)
 
 int comparator(const void * a, const void * b)
 {
-    char * s1 = (char *) a;
-    char * s2 = (char *) b;
-    int l1 = strlen(s1), l2 = strlen(s2);
-    printf("%d %d\n", l1, l2);
+    char * a1 = (char *) a;
+    char * b1 = (char *) b;
+    int l1 = strlen(a1), l2 = strlen(b1);
     int i = 0;
-    for(i = 0; i < l1; i++)
-    {
-	if(s1[i] < s2[i])
-	{
-	    return s1[i] - s2[i];
-	}
 
-	if(s1[i] > s2[i])
+    for(i = 0; i < min(l1,l2); i++)
+    {
+	if(a1[i] < b1[i])
 	{
-	    return s1[i] - s2[i];
+	    return a1[i] - b1[i];
+	}
+	else if(a1[i] > b1[i])
+	{
+	    return a1[i] - b1[i];
 	}
     }
 
-    return 0;
+    return l1 - l2;
+}
+
+int min(int a, int b)
+{
+    return a > b ? b : a;
 }

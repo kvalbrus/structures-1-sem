@@ -5,26 +5,29 @@ int f(void * a, void * b, size_t s);
 
 int main()
 {
-    char a,b;
+    char a, b;
+    int c, d;
     scanf("%c %c", &a, &b);
+    scanf("%d %d", &c, &d);
 
     f(&a, &b, sizeof(char));
-
-    printf("%c %c", a, b);
+    f(&c, &d, sizeof(int));
+    printf("%c %c\n", a, b);
+    printf("%d %d\n", c, d);
 
     return 0;
 }
 
 int f(void * a, void * b, size_t s)
 {
-    void * c;
-    switch(s)
+    char t;
+    size_t i = 0;
+
+    for(i = 0; i < s; i++)
     {
-	case sizeof(char):
-	    *(char*) c = *(char*) a;
-	    *(char*) a = *(char*) b;
-	    *(char*) b = *(char*) c;
-	    break; 
+	t = *((char *) b + i);
+	*((char *) b + i) = *((char *) a + i);
+	*((char *) a + i) = t;
     }
 
     return 0;

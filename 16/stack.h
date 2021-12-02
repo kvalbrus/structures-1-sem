@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef char Data;
+typedef int Data;
 typedef struct stack Stack;
 
 struct stack

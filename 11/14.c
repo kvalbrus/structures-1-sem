@@ -6,7 +6,7 @@ int main()
 {
     char a[300], c;
     int j = 0, i = 0;
-    while((c = getchar()) != '#')
+    while((c = getchar()) != '*')
     {
 	a[j] = c;
 	j++;

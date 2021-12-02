@@ -3,8 +3,9 @@
 Stack * stack_create(Stack * stack)
 {
     stack = (Stack *) calloc(1, sizeof(Stack));
+    stack -> data = (Data *) calloc(1, sizeof(Data));
 
-    stack -> size = 0;
+    stack -> size = 1;
     stack -> top = 0;
 
     return stack;
@@ -12,18 +13,14 @@ Stack * stack_create(Stack * stack)
 
 void stack_push(Stack * stack, Data x)
 {
-	puts("[3]");//
-	printf("%d\n", stack -> size);
     if(stack -> top >= stack -> size)
     {
-	puts("[4]");//
 	stack -> data = (Data *) realloc(stack -> data, stack -> size + 1);
 	stack -> size += 1;
     }
-    puts("[5]");//
 
     (stack -> data)[(stack -> top)] = x;
-    stack -> top += 1;puts("[6]");
+    stack -> top += 1;
 }
 
 Data stack_pop(Stack * stack)
@@ -57,7 +54,9 @@ void stack_print(Stack * stack)
         for(i = 0; i < stack -> top; i++)
 	{
 	    printf("%d ", (stack -> data)[i]);
-	}		
+	}
+
+        puts("");	
     }
     else
     {
@@ -72,7 +71,7 @@ int stack_size(Stack * stack)
 
 int stack_empty(Stack * stack)
 {
-    return stack -> top == 0 ? 1 : 0;
+    return stack -> top == 0 ? 0 : 1;
 }
 
 void stack_clear(Stack * stack)
