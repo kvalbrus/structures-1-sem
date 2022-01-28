@@ -5,45 +5,33 @@ List * f(List * list);
 int main()
 {
     List * list = NULL;
-    List * current;
-    List * prev;
-    int n = 0, i = 0, num = 0;
+    List * a = NULL;
+    List * b, * c;
 
-    puts("Enter number:");
+    int n = 0, i = 0, x = 0;
+
+    puts("Enter number");
     scanf("%d", &n);
 
-    if(n > 0) puts("Enter list");
+    puts("Enter list:");
     for(i = 0; i < n; i++)
     {
-	current = (List *) calloc(1, sizeof(List));
-	current -> next = NULL;
-	scanf("%d", &current -> element);
+	scanf("%d", &x);
 
-	if(list == NULL) list = current;
-	else prev -> next = current;
-
-	prev = current;
+	list = list_addElementToEnd(list, x);
     }
 
-    list_print(list);
+    for(b = list; b != NULL; b = b -> next)
+    {
+	a = list_addElementToEnd(a, b -> element);
 
+	for(c = list; c != b; c = c -> next)
+	{
+	    a = list_addElementToEnd(a, c -> element);
+	}
+    }
+
+    list_print(a);
 
     return 0;
-}
-
-List * f(List * list)
-{
-    List * current = list;
-    List * current2 = list;
-
-    while(current != NULL)
-    {
-        current2 = current;
-        while(current2 != NULL)
-	{
-	    current2 = current2 -> next;
-	}	
-
-	current2 -> next = 
-    }
 }

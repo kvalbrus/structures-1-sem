@@ -1,98 +1,113 @@
 #include <stdio.h>
+#include <string.h>
 
 #define N 100
 
 struct _Decimal
 {
-    char a[N];
-    unsigned int n;
+    int a[N];
+    int n[N];
+    int l;
 };
 
 typedef struct _Decimal Decimal;
 
-Decimal mult_int(Decimal a, unsigned int x);
+Decimal mult_int(Decimal a);
+Decimal get(char * a1, char * a2);
 
 int main()
 {
     Decimal dec, res;
-    int i = 0, k = 0, x = 0, m = 0;
-
-    puts("Enter numer");
-    scanf("%d%*c", &dec.n);
-
-    puts("Enter chislo");
-    for(i = 0; i < dec.n; i++)
+    int i = 0, x = 0;
+    char a1[N], a2[N];
+    for(i = 0; i < N; i++)
     {
-	scanf("%c", &dec.a[dec.n - i - 1]);
-	dec.a[dec.n - i - 1] -= 48;
+	dec.a[i] = 0;
+	dec.n[i] = 0;
     }
 
-    puts("Enter x");
-    scanf("%d", &x);
+    puts("Enter x and mul");
+    scanf("%s %s", a1, a2);
 
-    res = mult_int(dec, x);
+    dec = get(a1, a2);
 
-    for(i = res.n - 1; i >= 0; i--)
-    {	
+    res = mult_int(dec);
+
+    for(i = res.l - 1; i >= 0; i--)
+    {
 	printf("%d", res.a[i]);
     }
+
+    if(res.l == 0)
+    {
+	printf("0");
+    }
+
+    puts("");
 
     return 0;
 }
 
-Decimal mult_int(Decimal dec, unsigned int x)
+Decimal get(char * a1, char * a2)
+{
+    Decimal dec;
+    int i = 0;
+
+    for(i = 0; i < N; i++)
+    {
+	dec.a[i] = 0;
+	dec.n[i] = 0;
+    }
+
+    for(i = strlen(a1) - 1; i >= 0; i--)
+    {
+	dec.a[strlen(a1) - i - 1] = (int) (a1[i] - '0');
+    }
+
+    dec.l = strlen(a1);
+
+    for(i = strlen(a2) - 1; i >= 0; i--)
+    {
+	dec.n[strlen(a2) - i - 1] = (int) (a2[i] - '0');
+    }
+
+    return dec;
+}
+
+Decimal mult_int(Decimal dec)
 {
     Decimal res;
-    int i = 0, j = 0, a = 0, ost = 0, k = 0, l = 0, m = 0;
+    int i = 0, j = 0;
 
-    res.n = dec.n;
-
-    for(i = 0; x > 0; x /= 10, i++)
+    for(i = 0; i < N; i++)
     {
-        k = x % 10;
-	l = 0;
+	res.a[i] = 0;
+    }
 
-        for(j = 0; j < res.n; j++)
-        {
-	    m = dec.a[j] * k;
-	    res.a[i+j] += m % 10 + l;
+    res.l = 0;
 
-	    if(res.a[i+j] > 0 && res.n < i + j + 1)
-	    {
-	        res.n = i + j + 1;
-	    }
-
-	    l = k / 10;
-
-	//a = dec.a[dec.n - 1 - i] * x + ost;
-	//ost = a / 10;
-	//a %= 10;
-
-	//res.a[i] = a;
-        }
-
-        if(l > 0)
+    for(i = 0; i < N; i++)
+    {
+        for(j = 0; j < N - i; j++)
 	{
-	    res.a[i+j] += l;
-	    res.n++;
+	    res.a[i + j] += dec.a[i] * dec.n[j];
 	}
-
+    }
+    
+    for(i = 0; i < N - 1; i++)
+    {
+	res.a[i + 1] += res.a[i] /10;
+	res.a[i] %= 10;
     }
 
-    for(i = 0; i < res.n; i++)
+    for(i = N - 1; i >= 0; i--)
     {
-	res.a[i+1] = res.a[i] / 10;
-	res.a[i] = res.a[i] % 10;
+	if(res.a[i] != 0)
+	{
+	    res.l = i + 1;
+	    break;
+	}
     }
-    /*if(ost > 0)
-    {
-        res.a[i] = ost;
-	res.n = dec.n + 1;
-    }
-    else
-    {
-	res.n = dec.n;
-    }*/
 
     return res;
 }

@@ -3,6 +3,12 @@
 // ready
 void list_print(List * list)
 {
+    if(list == NULL)
+    {
+	printf("List is empty!\n");
+	return;
+    }
+
     List * current = list;
 
     while(current != NULL)
@@ -16,7 +22,7 @@ void list_print(List * list)
 
 bool list_isEmpty(List * spisok)
 {
-    return spisok != NULL ? true : false;
+    return spisok == NULL ? true : false;
 }
 
 List * list_nextTransfer(List * spisok)
@@ -33,21 +39,29 @@ int list_length(List * list)
 {
     int length = 0;
 
-    while(list != NULL) length++;
+    while(list != NULL)
+    {
+	length++;
+	list = list -> next;
+    }
 
     return length;
 }
 // ready
 List * list_deleteElementToStart(List * list)
 {
-    List * current = list;
-    if(current != NULL)
+    List * current;
+
+    if(list == NULL)
     {
-	list = list -> next;
-	free(current);
+	return list;
     }
 
-    return list;
+    current = list -> next;
+
+    free(list);
+
+    return current;
 }
 
 // ready
@@ -56,18 +70,27 @@ List * list_deleteElementToEnd(List * list)
     List * current = list;
     List * prev;
 
-    if(current != NULL)
+    if(list == NULL)
     {
-        while(current -> next != NULL)
-        {
-	    prev = current;
-	    current = current -> next;
-        }
-
-        free(current);
-        prev -> next = NULL;
+	return list;
     }
 
+    if(list -> next == NULL)
+    {
+	free(list);
+	list = NULL;
+
+	return list;
+    }
+
+    while(current -> next != NULL)
+    {
+	prev = current;
+	current = current -> next;
+    }
+
+    free(current);
+    prev -> next = NULL;
     return list;
 }
 
@@ -83,12 +106,26 @@ void list_printToFile(List * list, FILE * file)
     }
 }
 
-void list_deleteElement(List * spisok, Element element)
+List * list_deleteElement(List * list, Element element)
 {
     List * current;
     List * previous;
 
-    current = spisok;
+    if(list == NULL)
+    {
+	return list;
+    }
+
+    current = list;
+
+    if(list -> element == element)
+    {
+	previous = list;
+	list = list -> next;
+	free(previous);
+
+	return list;
+    }
 
     while(current != NULL)
     {
@@ -104,19 +141,30 @@ void list_deleteElement(List * spisok, Element element)
 		previous -> next = current -> next;
 	    }
 
-	    return;
+	    return list;
 	}
 
 	previous = current;
 	current = current -> next;
     }
 
-    printf("Element %d not found!\n", element);
+    printf("Element %d isn't found!\n", element);
+
+    return list;
 }
 
 // ready
 List * list_addElementToStart(List * list, Element element)
 {
+    if(list == NULL)
+    {
+	list = (List *) calloc(1, sizeof(List));
+	list -> element = element;
+	list -> next = NULL;
+
+	return list;
+    }
+
     List * newElement = (List *) calloc(1, sizeof(List));
     newElement -> element = element;
     newElement -> next = list;
@@ -126,6 +174,15 @@ List * list_addElementToStart(List * list, Element element)
 
 List * list_addElementToEnd(List * list, Element element)
 {
+    if(list == NULL)
+    {
+	list = (List *) calloc(1, sizeof(List));
+	list -> element = element;
+	list -> next = NULL;
+
+	return list;
+    }
+
     List * newElement = (List *) calloc(1, sizeof(List));
     List * current = list;
     newElement -> element = element;
@@ -143,18 +200,34 @@ List * list_addElementToEnd(List * list, Element element)
 
 List * list_addElementAfter(List * list, Element new, Element element)
 {
-    List * newElement = (List *) calloc(1, sizeof(List));
-    newElement -> element = new;
+    if(list == NULL)
+    {
+	printf("Element isn't found!\n");
+
+	return list;
+    }
+
+    List * newElement;
 
     List * current = list;
 
     while(current -> element != element && current != NULL)
     {
 	current = current -> next;
+	if(current == NULL) break;
+    }
+
+    if(current == NULL)
+    {
+	printf("Element isn't found!\n");
+
+	return list;
     }
 
     if(current -> element == element)
     {
+	newElement = (List *) calloc(1, sizeof(List));
+	newElement -> element = new;
         newElement -> next = current -> next;
 	current -> next = newElement;
     }
@@ -164,17 +237,59 @@ List * list_addElementAfter(List * list, Element new, Element element)
 
 List * list_addElementBefore(List * list, Element new, Element element)
 {
-
-}
-
-void list_delete(List * list)
-{
-    List * next = list -> next;
-    while(next != NULL)
+    if(list == NULL)
     {
-	free(list);
+	printf("Element isn't found!\n");
+	
+	return list;
+    }	    
 
-	list = next;
+    List * current = list;
+    List * prev;
+    List * newElement;
+
+    while(current != NULL && current -> element != element)
+    {
+	prev = current;
+	current = current -> next;
+	if(current == NULL) break;
     }
+
+    if(current == NULL)
+    {
+	printf("Element isn't found!\n");
+
+	return list;
+    }
+
+    if(current -> element == element)
+    {
+        newElement = (List *) calloc(1, sizeof(List));
+	newElement -> element = new;
+	newElement -> next = current;
+	prev -> next = newElement;
+    }
+
+    return list;
 }
 
+List * list_delete(List * list)
+{
+    if(list == NULL) return list;
+
+    List * next = list -> next;
+    List * current = list;
+
+    while(current != NULL)
+    {
+	free(current);
+	current = next;
+
+	if(next != NULL)
+	{
+	    next = next -> next;
+	}
+    }
+
+    return current;
+}

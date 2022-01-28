@@ -1,24 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-typedef int Item;
+typedef int Element;
 
-typedef struct node
+struct list
 {
-    Item element;
-    struct node * next;
-} Node;
+    Element element;
+    struct list * next;
+};
 
-typedef struct queue
-{
-    Node * front;
-    Node * rear;
-    int items;
-} Queue;
 
-Queue add(Queue * queue, Node * elem);
-Queue remove(Queue * queue);
-Item print(Queue * queue);
-int size(Queue * queue);
-void clear(Queue * Queue);
-void freeQueue(Queue * queue);
+typedef struct list List;
+
+Element list_first(List * list);
+void list_print(List * list);
+bool list_isEmpty(List * spisok);
+List * list_addElementToEnd(List * list, Element element);
+List * list_deleteElementToStart(List * list);
+int list_length(List * list);
+List * list_delete(List * list);

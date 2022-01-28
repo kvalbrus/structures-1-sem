@@ -1,43 +1,112 @@
 #include "queue.h"
 
-Queue * add(Queue * queue, Node * elem)
-{
-    queue -> rear = elem;
-    elem -> next = NULL;
 
-    return queue;
+bool list_isEmpty(List * spisok)
+{
+    return spisok == NULL ? true : false;
 }
 
-Queue * remove(Queue * queue)
+Element list_first(List * list)
 {
-    Node * a = queue -> front;
-    queue -> front = a -> next;
-
-    free(a);
-
-    return queue;
-}
-
-void print(Queue * queue)
-{
-    printf("%d\n", queue -> front -> elem);
-}
-
-int size(Queue * queue)
-{
-    int size = 0;
-    Node * a = queue -> front;
-
-    while(a != NULL)
+    if(list != NULL)
     {
-	size++;
-	a = a -> next;
+	return list -> element;
     }
 
-    return size;
+    return 0;
 }
 
-void clear(Queue * queue)
+void list_print(List * list)
 {
+    if(list == NULL)
+    {
+	printf("Queue is empty!\n");
+	return;
+    }
+
+    List * current = list;
+
+    while(current != NULL)
+    {
+	printf("%d ", current -> element);
+	if(current -> next == NULL) puts("");
+
+	current = current -> next;
+    }
+}
+
+int list_length(List * list)
+{
+    int length = 0;
+
+    while(list != NULL)
+    {
+	length++;
+	list = list -> next;
+    }
+
+    return length;
+}
+
+List * list_deleteElementToStart(List * list)
+{
+    List * current;
+
+    if(list == NULL)
+    {
+	return list;
+    }
+
+    current = list -> next;
+
+    free(list);
+
+    return current;
+}
+
+List * list_addElementToEnd(List * list, Element element)
+{
+    if(list == NULL)
+    {
+	list = (List *) calloc(1, sizeof(List));
+	list -> element = element;
+	list -> next = NULL;
+
+	return list;
+    }
+
+    List * newElement = (List *) calloc(1, sizeof(List));
+    List * current = list;
+    newElement -> element = element;
+    newElement -> next = NULL;
     
+    while(current -> next != NULL)
+    {
+	current = current -> next;
+    }
+
+    current -> next = newElement;
+
+    return list;
+}
+
+List * list_delete(List * list)
+{
+    if(list == NULL) return list;
+
+    List * next = list -> next;
+    List * current = list;
+
+    while(current != NULL)
+    {
+	free(current);
+	current = next;
+
+	if(next != NULL)
+	{
+	    next = next -> next;
+	}
+    }
+
+    return current;
 }

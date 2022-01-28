@@ -2,21 +2,31 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef int Element;
+typedef struct student
+{
+    char name[60];
+    int year;
+    int course;
+    int group;
+    int scores[5];
+} Student;
 
-struct list
+typedef Student * Element;
+
+typedef struct list
 {
     Element element;
     struct list * next;
-};
+} List;
 
-typedef struct list List;
 
 /**
  * Эта функция печатает все элементы списка
  * param [in] list - список элементов
  */
 void list_print(List * list);
+
+bool list_isEmpty(List * spisok);
 
 /**
  * Эта функция печатает все элементы списка в файл
@@ -59,6 +69,8 @@ List * list_deleteElementToStart(List * list);
  */
 List * list_deleteElementToEnd(List * list);
 
+List * list_deleteElement(List * list, Element element);
+
 /**
  * Эта функция считает длину списка
  * param [in] list - список элементов
@@ -66,4 +78,4 @@ List * list_deleteElementToEnd(List * list);
  */
 int list_length(List * list);
 
-void list_delete(List * list);
+List * list_delete(List * list);
